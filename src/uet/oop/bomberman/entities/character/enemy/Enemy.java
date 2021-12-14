@@ -13,6 +13,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.level.Coordinates;
 
 import java.awt.*;
+import java.util.Random;
 
 public abstract class Enemy extends Character {
 
@@ -27,6 +28,7 @@ public abstract class Enemy extends Character {
 
     protected int finalAnimation = 30;
     protected Sprite deadSprite;
+    protected Random random = new Random();
 
     public Enemy(int x, int y, Board board, Sprite dead, double speed, int points) {
         super(x, y, board);
@@ -181,15 +183,11 @@ public abstract class Enemy extends Character {
         // TODO: xử lý va chạm với Flame
         // TODO: xử lý va chạm với Bomber
 
-        if (e instanceof Flame) {
-            this.kill();
-            return true;
-        }
-
         if (e instanceof Bomber) {
             ((Bomber) e).kill();
             return true;
         }
+
 
         return true;
         // Long but easy to understand

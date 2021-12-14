@@ -2,6 +2,9 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.bomb.Flame;
+import uet.oop.bomberman.entities.character.enemy.ai.EasyAI;
 import uet.oop.bomberman.entities.character.enemy.ai.HardAI;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -10,7 +13,7 @@ public class Doria extends Enemy {
         super(x, y, board,Sprite.kondoria_dead, Game.getBomberSpeed()*0.8, 4000);
         sprite = Sprite.kondoria_left1;
 
-        ai = new HardAI(board.getBomber(), this);
+        ai = new EasyAI();
         direction = ai.calculateDirection();
     }
 
@@ -26,5 +29,13 @@ public class Doria extends Enemy {
                 sprite = Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left3, animate, 60);
                 break;
         }
+    }
+
+    @Override
+    public boolean collide(Entity e) {
+        if (e instanceof Flame) {
+            this.kill();
+        }
+        return true;
     }
 }
