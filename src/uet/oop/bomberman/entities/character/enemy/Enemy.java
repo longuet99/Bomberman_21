@@ -28,7 +28,6 @@ public abstract class Enemy extends Character {
 
     protected int finalAnimation = 30;
     protected Sprite deadSprite;
-    protected Random random = new Random();
 
     public Enemy(int x, int y, Board board, Sprite dead, double speed, int points) {
         super(x, y, board);

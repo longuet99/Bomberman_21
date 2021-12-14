@@ -11,8 +11,9 @@ import java.util.Random;
 
 public class Dahl extends Enemy {
 
-    public Dahl (int x, int y, Board board){
-        super(x, y, board, Sprite.doll_dead, Game.getBomberSpeed() / 2, 2000);
+    protected Random random = new Random();
+    public Dahl (int x, int y, Board board) {
+        super(x, y, board, Sprite.doll_dead, Game.getBomberSpeed() / 3, 2000);
 
         sprite = Sprite.doll_left1;
 
