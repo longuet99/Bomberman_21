@@ -25,47 +25,23 @@ public class FlamePatch extends Entity {
         lastFire = last;
         this.direction = direction;
 
-        switch (direction) {
-            case 0:
-
-            case 2: {
-                sprite = Sprite.explosion_vertical2;
-                break;
-            }
-
-            case 1:
-
-            case 3: {
-                sprite = Sprite.explosion_horizontal2;
-                break;
-            }
+        if (direction == 0 || direction == 2) {
+            sprite = Sprite.explosion_vertical2;
+        } else if (direction == 1 || direction == 3) {
+            sprite = Sprite.explosion_horizontal2;
         }
     }
 
     public void setLast(boolean last) {
         this.lastFire = last;
-        switch (direction) {
-
-            case 1: {
-                sprite = Sprite.explosion_horizontal_right_last2;
-                break;
-            }
-
-            case 2: {
-                sprite = Sprite.explosion_vertical_down_last2;
-                break;
-            }
-
-            case 3: {
-                sprite = Sprite.explosion_horizontal_left_last2;
-                break;
-            }
-            case 0:
-
-            default: {
-                sprite = Sprite.explosion_vertical_top_last2;
-                break;
-            }
+        if (direction == 1) {
+            sprite = Sprite.explosion_horizontal_right_last2;
+        } else if (direction == 2) {
+            sprite = Sprite.explosion_vertical_down_last2;
+        } else if (direction == 3) {
+            sprite = Sprite.explosion_horizontal_left_last2;
+        } else {
+            sprite = Sprite.explosion_vertical_top_last2;
         }
     }
 
@@ -84,11 +60,11 @@ public class FlamePatch extends Entity {
     @Override
     public boolean collide(Entity e) {
         // TODO: xử lý khi FlamePatch va chạm với Character
-        if (e instanceof Character) {
-            ((Character) e).kill();
-            SoundEffect.KILL.playKill();
-            return false;
+        if (!(e instanceof Character)) {
+            return true;
         }
-        return true;
+        ((Character) e).kill();
+        SoundEffect.KILL.playKill();
+        return false;
     }
 }

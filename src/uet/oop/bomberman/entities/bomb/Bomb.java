@@ -115,19 +115,20 @@ public class Bomb extends AnimatedEntity {
         // TODO: xử lý khi Bomber đi ra sau khi vừa đặt bom (allowedToPass)
         // TODO: xử lý va chạm với Flame của Bomb khác
 
-        if (e instanceof Bomber) {
+        if (!(e instanceof Bomber)) {
+            if (!(e instanceof Flame)) {
+                return true;
+            }
+            this.explodeTimer = 0;
+            return true;
+        } else {
             double diffY = -1 * (Coordinates.tileToPixel(y) - e.getY());
             double diffX = -1 * (Coordinates.tileToPixel(x) - e.getX());
-            if (!( diffY <= Game.TILES_SIZE && diffX < Game.TILES_SIZE && diffY >= 1 && diffX >= -Game.getCharacterWidth())) {
+            if (!(diffY <= Game.TILES_SIZE && diffX < Game.TILES_SIZE && diffY >= 1 && diffX >= -Game.getCharacterWidth())) {
                 allowedToPass = false;
             }
             return !allowedToPass;
         }
 
-        if (e instanceof Flame) {
-            this.explodeTimer = 0;
-            return true;
-        }
-        return true;
     }
 }

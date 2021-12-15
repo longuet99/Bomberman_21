@@ -49,33 +49,22 @@ public class Flame extends Entity {
         int calculatedX = (int) x;
         int calculatedY = (int) y;
         for (int i = 0; i < flameSegmentsLength; i++) {
-            switch (direction) {
-                case 0: {
-                    calculatedY--;
-                    break;
-                }
-                case 1: {
-                    calculatedX++;
-                    break;
-                }
-                case 2: {
-                    calculatedY++;
-                    break;
-                }
-                case 3: {
-                    calculatedX--;
-                    break;
-                }
-                default: {
-                    break;
-                }
+            if (direction == 0) {
+                calculatedY--;
+            } else if (direction == 1) {
+                calculatedX++;
+            } else if (direction == 2) {
+                calculatedY++;
+            } else if (direction == 3) {
+                calculatedX--;
             }
             flamePatches[i] = new FlamePatch(calculatedX, calculatedY, direction, false);
         }
 
-        if (flameSegmentsLength > 0) {
-            flamePatches[flameSegmentsLength - 1].setLast(true);
+        if (flameSegmentsLength <= 0) {
+            return;
         }
+        flamePatches[flameSegmentsLength - 1].setLast(true);
     }
 
     /**
@@ -88,49 +77,38 @@ public class Flame extends Entity {
         int flameLength = 0;
         int cvtXtoInt = (int) x;
         int cvtYtoInt = (int) y;
-        for (; flameLength <= radius; flameLength++) {
-            switch (direction) {
-                case 0: {
-                    cvtYtoInt--;
-                    break;
-                }
-                case 1: {
-                    cvtXtoInt++;
-                    break;
-                }
-                case 2: {
-                    cvtYtoInt++;
-                    break;
-                }
-                case 3: {
-                    cvtXtoInt--;
-                    break;
-                }
-                default: {
-                    break;
-                }
+        while (flameLength <= radius) {
+            if (direction == 0) {
+                cvtYtoInt--;
+            } else if (direction == 1) {
+                cvtXtoInt++;
+            } else if (direction == 2) {
+                cvtYtoInt++;
+            } else if (direction == 3) {
+                cvtXtoInt--;
             }
 
             Entity entityInFlame = board.getEntity(cvtXtoInt, cvtYtoInt, null);
             if (entityInFlame.collide(this)) {
                 break;
             }
+            flameLength++;
         }
         return flameLength;
     }
 
     public FlamePatch flameSegmentAt(int x, int y) {
-        for (int i = 0; i < flamePatches.length; i++) {
-            if ( flamePatches[i].getY() == y && flamePatches[i].getX() == x)
-                return flamePatches[i];
+        for (FlamePatch flamePatch : flamePatches) {
+            if (flamePatch.getY() == y && flamePatch.getX() == x)
+                return flamePatch;
         }
         return null;
     }
 
     @Override
     public void render(Screen screen) {
-        for (int i = 0; i < flamePatches.length; i++) {
-            flamePatches[i].render(screen);
+        for (FlamePatch flamePatch : flamePatches) {
+            flamePatch.render(screen);
         }
     }
 

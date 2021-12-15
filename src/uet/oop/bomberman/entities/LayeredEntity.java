@@ -4,6 +4,7 @@ import uet.oop.bomberman.entities.tile.destroyable.DestroyableTile;
 import uet.oop.bomberman.graphics.Screen;
 
 import java.util.LinkedList;
+import java.util.stream.IntStream;
 
 /**
  * Chứa và quản lý nhiều Entity tại cùng một vị trí
@@ -16,15 +17,18 @@ public class LayeredEntity extends Entity {
 	public LayeredEntity(int x, int y, Entity ... entities) {
 		this.x = x;
 		this.y = y;
-		
-		for (int i = 0; i < entities.length; i++) {
+
+		IntStream.range(0, entities.length).forEach(i -> {
 			this.entities.add(entities[i]);
-			
-			if(i > 1) {
-				if(entities[i] instanceof DestroyableTile)
-					((DestroyableTile)entities[i]).addHiddenSprite(entities[i-1].getSprite());
+			if (i > 1) if (!(entities[i] instanceof DestroyableTile)) {
+				return;
+			} else {
+				((DestroyableTile) entities[i]).addHiddenSprite(entities[i - 1].getSprite());
 			}
-		}
+			else {
+				return;
+			}
+		});
 	}
 	
 	@Override
@@ -45,15 +49,17 @@ public class LayeredEntity extends Entity {
 	
 	private void clearRemoved() {
 		Entity top  = getTopEntity();
-		
-		if(top.isRemoved())  {
-			entities.removeLast();
+
+		if (!top.isRemoved()) {
+			return;
 		}
+		entities.removeLast();
 	}
 
 	@Override
 	public boolean collide(Entity e) {
-		return this.getTopEntity().collide(e);
+		boolean collide = this.getTopEntity().collide(e);
+		return collide;
 	}
 
 }
