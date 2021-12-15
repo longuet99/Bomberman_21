@@ -73,8 +73,6 @@ public class Flame extends Entity {
             flamePatches[i] = new FlamePatch(calculatedX, calculatedY, direction, false);
         }
 
-        // In case of NullPointerException
-
         if (flameSegmentsLength > 0) {
             flamePatches[flameSegmentsLength - 1].setLast(true);
         }
@@ -113,7 +111,6 @@ public class Flame extends Entity {
                 }
             }
 
-            // Kill character actually here
             Entity entityInFlame = board.getEntity(cvtXtoInt, cvtYtoInt, null);
             if (entityInFlame.collide(this)) {
                 break;
@@ -124,7 +121,7 @@ public class Flame extends Entity {
 
     public FlamePatch flameSegmentAt(int x, int y) {
         for (int i = 0; i < flamePatches.length; i++) {
-            if (flamePatches[i].getX() == x && flamePatches[i].getY() == y)
+            if ( flamePatches[i].getY() == y && flamePatches[i].getX() == x)
                 return flamePatches[i];
         }
         return null;

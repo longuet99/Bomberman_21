@@ -55,10 +55,11 @@ public class Bomber extends Character {
     public void render(Screen screen) {
         calculateXOffset();
 
-        if (alive)
+        if (alive) {
             chooseSprite();
-        else
+        } else {
             sprite = Sprite.player_dead1;
+        }
 
         screen.renderEntity((int) x, (int) y - sprite.SIZE, this);
     }
@@ -78,11 +79,12 @@ public class Bomber extends Character {
         // TODO: nếu 3 điều kiện trên thỏa mãn thì thực hiện đặt bom bằng placeBomb()
         // TODO: sau khi đặt, nhớ giảm số lượng Bomb Rate và reset timeBetweenTwoBombs về 0
         int bombRate = Game.getBombRate();
-        if (input.space && bombRate > 0 && this.timeBetweenTwoBombs < 0) {
-            Game.addBombRate(-1);
-            this.timeBetweenTwoBombs = Game.TIME_BETWEEN_PLACE_BOMB;
-            this.placeBomb(Coordinates.pixelToTile(this.x + Game.TILES_SIZE / 2), Coordinates.pixelToTile(this.y - Game.TILES_SIZE / 2));
+        if (!input.space || bombRate <= 0 || this.timeBetweenTwoBombs >= 0) {
+            return;
         }
+        Game.addBombRate(-1);
+        this.timeBetweenTwoBombs = Game.TIME_BETWEEN_PLACE_BOMB;
+        this.placeBomb(Coordinates.pixelToTile(this.x + Game.TILES_SIZE / 2), Coordinates.pixelToTile(this.y - Game.TILES_SIZE / 2));
 
     }
 
@@ -110,7 +112,9 @@ public class Bomber extends Character {
 
     @Override
     public void kill() {
-        if (!alive) return;
+        if (!alive) {
+            return;
+        }
         SoundEffect.GHOST.stop();
         alive = false;
     }
@@ -129,34 +133,34 @@ public class Bomber extends Character {
         double x = this.x;
         double y = this.y;
 
-        if (input.up) {
+        if (!input.up) {
+        } else {
             y -= Game.getBomberSpeed();
             this.direction = 0;
 
         }
 
-        if (input.right) {
+        if (!input.right) {
+        } else {
             x += Game.getBomberSpeed();
             this.direction = 1;
         }
 
-        if (input.down) {
+        if (!input.down) {
+        } else {
             y += Game.getBomberSpeed();
             this.direction = 2;
-
-
         }
 
-        if (input.left) {
+        if (!input.left) {
+        } else {
             x -= Game.getBomberSpeed();
             this.direction = 3;
         }
 
-        this.moving = input.right || input.up || input.down || input.left;
-
+        this.moving = input.down ||input.left || input.up || input.right ;
 
         this.move(x, y);
-
 
     }
 
@@ -216,19 +220,13 @@ public class Bomber extends Character {
         Entity entity2 = board.getEntity(Coordinates.pixelToTile(coordinatesX2), Coordinates.pixelToTile(coordinatesY2), this);
         Entity currentEntity = board.getBombAt(Coordinates.pixelToTile(this.x), Coordinates.pixelToTile(this.y - 1));
 
-        if (currentEntity == null) {
-            return !(entity1.collide(this) || entity2.collide(this));
-        }
-        return !(entity1.collide(this) || entity2.collide(this) || currentEntity.collide(this));
+        return currentEntity == null ? !(entity1.collide(this) || entity2.collide(this)) : !(currentEntity.collide(this) || entity1.collide(this) || entity2.collide(this));
     }
 
     @Override
     public void move(double x, double y) {
 
-        if (this.canMove(x, y) && alive) {
-            this.x = x;
-            this.y = y;
-        } else {
+        if (!this.canMove(x, y) || !alive) {
             for (int i = 0; i < Game.getBomberSpeed(); i++) {
                 switch (this.direction) {
                     case 0: {
@@ -249,13 +247,17 @@ public class Bomber extends Character {
                         break;
                     }
                 }
-                if (canMove(x, y)) {
-                    this.x = x;
-                    this.y = y;
-                    break;
+                if (!canMove(x, y)) {
+                    continue;
                 }
+                this.x = x;
+                this.y = y;
+                break;
             }
 
+        } else {
+            this.x = x;
+            this.y = y;
         }
 
     }
@@ -288,12 +290,6 @@ public class Bomber extends Character {
                     sprite = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 20);
                 }
                 break;
-            case 1:
-                sprite = Sprite.player_right;
-                if (moving) {
-                    sprite = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 20);
-                }
-                break;
             case 2:
                 sprite = Sprite.player_down;
                 if (moving) {
@@ -306,6 +302,7 @@ public class Bomber extends Character {
                     sprite = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 20);
                 }
                 break;
+            case 1:
             default:
                 sprite = Sprite.player_right;
                 if (moving) {

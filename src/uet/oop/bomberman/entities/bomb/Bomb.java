@@ -116,9 +116,9 @@ public class Bomb extends AnimatedEntity {
         // TODO: xử lý va chạm với Flame của Bomb khác
 
         if (e instanceof Bomber) {
-            double diffY = e.getY() - Coordinates.tileToPixel(y);
-            double diffX = e.getX() - Coordinates.tileToPixel(x);
-            if (!(diffX >= -Game.getCharacterWidth() && diffX < Game.TILES_SIZE && diffY >= 1 && diffY <= Game.TILES_SIZE)) {
+            double diffY = -1 * (Coordinates.tileToPixel(y) - e.getY());
+            double diffX = -1 * (Coordinates.tileToPixel(x) - e.getX());
+            if (!( diffY <= Game.TILES_SIZE && diffX < Game.TILES_SIZE && diffY >= 1 && diffX >= -Game.getCharacterWidth())) {
                 allowedToPass = false;
             }
             return !allowedToPass;

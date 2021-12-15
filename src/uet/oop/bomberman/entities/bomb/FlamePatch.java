@@ -26,20 +26,14 @@ public class FlamePatch extends Entity {
         this.direction = direction;
 
         switch (direction) {
-            case 0: {
-                sprite = Sprite.explosion_vertical2;
-                break;
-            }
-
-            case 1: {
-                sprite = Sprite.explosion_horizontal2;
-                break;
-            }
+            case 0:
 
             case 2: {
                 sprite = Sprite.explosion_vertical2;
                 break;
             }
+
+            case 1:
 
             case 3: {
                 sprite = Sprite.explosion_horizontal2;
@@ -51,10 +45,6 @@ public class FlamePatch extends Entity {
     public void setLast(boolean last) {
         this.lastFire = last;
         switch (direction) {
-            case 0: {
-                sprite = Sprite.explosion_vertical_top_last2;
-                break;
-            }
 
             case 1: {
                 sprite = Sprite.explosion_horizontal_right_last2;
@@ -70,6 +60,7 @@ public class FlamePatch extends Entity {
                 sprite = Sprite.explosion_horizontal_left_last2;
                 break;
             }
+            case 0:
 
             default: {
                 sprite = Sprite.explosion_vertical_top_last2;
@@ -80,10 +71,10 @@ public class FlamePatch extends Entity {
 
     @Override
     public void render(Screen screen) {
-        int xt = (int) x << 4;
-        int yt = (int) y << 4;
+        int tX = (int) x << 4;
+        int tY = (int) y << 4;
 
-        screen.renderEntity(xt, yt, this);
+        screen.renderEntity(tX, tY, this);
     }
 
     @Override
