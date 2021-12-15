@@ -264,17 +264,17 @@ public class Bomber extends Character {
     public boolean collide(Entity e) {
         // TODO: xử lý va chạm với Flame
         // TODO: xử lý va chạm với Enemy
-        // Gặp là chết, nói nhiều làm gì
-        if (e instanceof Flame) {
-            this.kill();
-            SoundEffect.DEAD.playDead();
-            return false;
-        }
 
         if (e instanceof Enemy) {
             this.kill();
             SoundEffect.DEAD.playDead();
             return true;
+        }
+
+        if (e instanceof Flame) {
+            this.kill();
+            SoundEffect.DEAD.playDead();
+            return false;
         }
 
         return false;

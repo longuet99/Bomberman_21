@@ -35,12 +35,14 @@ public abstract class Enemy extends Character {
         this.points = points;
         this.speed = speed;
 
-        MAX_STEPS = Game.TILES_SIZE / this.speed;
-        rest = (MAX_STEPS - (int) MAX_STEPS) / MAX_STEPS;
-        steps = MAX_STEPS;
-
         afterTimer = 20;
         deadSprite = dead;
+
+        MAX_STEPS = Game.TILES_SIZE / this.speed;
+
+        steps = MAX_STEPS;
+
+        rest = (MAX_STEPS - (int) MAX_STEPS) / MAX_STEPS;
         Game.addEnemyCount(1);
     }
 
@@ -60,18 +62,17 @@ public abstract class Enemy extends Character {
     @Override
     public void render(Screen screen) {
 
-        if (alive)
-            chooseSprite();
-        else {
-            if (afterTimer > 0) {
+        if (!alive) {
+            if (afterTimer <= 0) {
+                sprite = Sprite.movingSprite(Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, animate, 60);
+            } else {
                 sprite = deadSprite;
                 animate = 0;
-            } else {
-                sprite = Sprite.movingSprite(Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, animate, 60);
             }
-
         }
-
+        else {
+            chooseSprite();
+        }
         screen.renderEntity((int) x, (int) y - sprite.SIZE, this);
     }
 
@@ -91,20 +92,20 @@ public abstract class Enemy extends Character {
         steps--;
 
         switch (this.direction) {
-            case 0: {
-                y -= speed;
-                break;
-            }
             case 1: {
                 x += speed;
                 break;
             }
-            case 2: {
-                y += speed;
+            case 0: {
+                y -= speed;
                 break;
             }
             case 3: {
                 x -= speed;
+                break;
+            }
+            case 2: {
+                y += speed;
                 break;
             }
             default: {
@@ -170,7 +171,6 @@ public abstract class Enemy extends Character {
             }
         }
 
-
         Entity entity1 = board.getEntity(Coordinates.pixelToTile(dependedDirectionX1), Coordinates.pixelToTile(dependedDirectionY1), this);
         Entity entity2 = board.getEntity(Coordinates.pixelToTile(dependedDirectionX2), Coordinates.pixelToTile(dependedDirectionY2), this);
 
@@ -179,7 +179,6 @@ public abstract class Enemy extends Character {
 
     @Override
     public boolean collide(Entity e) {
-        // TODO: xử lý va chạm với Flame
         // TODO: xử lý va chạm với Bomber
 
         if (e instanceof Bomber) {
@@ -187,14 +186,13 @@ public abstract class Enemy extends Character {
             return true;
         }
 
-
         return true;
         // Long but easy to understand
     }
 
     @Override
     public void kill() {
-        if (!alive) return;
+        if (alive) return;
         alive = false;
 
         board.addPoints(points);
@@ -207,11 +205,13 @@ public abstract class Enemy extends Character {
 
     @Override
     protected void afterKill() {
-        if (afterTimer > 0) --afterTimer;
-        else {
-            if (finalAnimation > 0) --finalAnimation;
+        if (afterTimer <= 0) {
+            if (finalAnimation <= 0)  remove();
             else
-                remove();
+                --finalAnimation;
+        }
+        else {
+            --afterTimer;
         }
     }
 

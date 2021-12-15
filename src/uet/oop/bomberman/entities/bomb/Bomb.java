@@ -32,18 +32,19 @@ public class Bomb extends AnimatedEntity {
 
     @Override
     public void update() {
-        if (explodeTimer > 0)
-            explodeTimer--;
-        else {
-            if (!exploded)
-                explode();
-            else
+        if (explodeTimer < 0) {
+            if (exploded)
                 updateFlames();
-
-            if (_timeAfter > 0)
-                _timeAfter--;
             else
+                explode();
+
+            if (_timeAfter < 0)
                 remove();
+            else
+                _timeAfter--;
+        }
+        else {
+            explodeTimer--;
         }
 
         animate();
@@ -51,16 +52,17 @@ public class Bomb extends AnimatedEntity {
 
     @Override
     public void render(Screen screen) {
-        if (exploded) {
+        if (!exploded) {
+            sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, 60);
+        } else {
             sprite = Sprite.bomb_exploded2;
             renderFlames(screen);
-        } else
-            sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, 60);
+        }
 
-        int xt = (int) x << 4;
-        int yt = (int) y << 4;
+        int tX = (int) x << 4;
+        int tY = (int) y << 4;
 
-        screen.renderEntity(xt, yt, this);
+        screen.renderEntity(tX, tY, this);
     }
 
     public void renderFlames(Screen screen) {
@@ -79,38 +81,32 @@ public class Bomb extends AnimatedEntity {
      * Xử lý Bomb nổ
      */
     protected void explode() {
-        SoundEffect.EXPLODE.playExpLode();
         exploded = true;
-
-        // TODO: xử lý khi Character đứng tại vị trí Bomb
-
         List<Character> characterList = board.characters;
+        SoundEffect.EXPLODE.playExpLode();
 
-        for (Character c : characterList) {
-            if (c.getXTile() == x && c.getYTile() == y) {
-                c.kill();
-            }
-        }
         // TODO: tạo các Flame
-
-
         for (int i = 0; i < 4; i++) {
             Flame upFlame = new Flame((int) x, (int) y, i, Game.getBombRadius(), this.board);
             flames[i] = upFlame;
         }
 
-
+        // TODO: xử lý khi Character đứng tại vị trí Bomb
+        for (Character c : characterList) {
+            if (c.getXTile() == x && c.getYTile() == y) {
+                c.kill();
+            }
+        }
     }
 
     public FlamePatch flameAt(int x, int y) {
         if (!exploded) return null;
 
         for (Flame flame : flames) {
-            if (flame == null) return null;
             FlamePatch e = flame.flameSegmentAt(x, y);
             if (e != null) return e;
+            if (flame == null) return null;
         }
-
         return null;
     }
 
@@ -120,15 +116,13 @@ public class Bomb extends AnimatedEntity {
         // TODO: xử lý va chạm với Flame của Bomb khác
 
         if (e instanceof Bomber) {
-            double diffX = e.getX() - Coordinates.tileToPixel(x);
             double diffY = e.getY() - Coordinates.tileToPixel(y);
+            double diffX = e.getX() - Coordinates.tileToPixel(x);
             if (!(diffX >= -Game.getCharacterWidth() && diffX < Game.TILES_SIZE && diffY >= 1 && diffY <= Game.TILES_SIZE)) {
                 allowedToPass = false;
             }
-
             return !allowedToPass;
         }
-
 
         if (e instanceof Flame) {
             this.explodeTimer = 0;
