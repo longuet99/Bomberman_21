@@ -20,14 +20,14 @@ public class Brick extends DestroyableTile {
 	public void render(Screen screen) {
 		int x = Coordinates.tileToPixel(this.x);
 		int y = Coordinates.tileToPixel(this.y);
-		
-		if(destroyed) {
+
+		if (!destroyed) {
+			screen.renderEntity( x, y, this);
+		} else {
 			sprite = movingSprite(Sprite.brick_exploded, Sprite.brick_exploded1, Sprite.brick_exploded2);
-			
+
 			screen.renderEwHiddenE(x, y, this, hiddenSprite);
 		}
-		else
-			screen.renderEntity( x, y, this);
 	}
 	
 }

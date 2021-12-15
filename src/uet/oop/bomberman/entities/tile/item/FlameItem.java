@@ -15,10 +15,11 @@ public class FlameItem extends Item {
 	public boolean collide(Entity e) {
 		// TODO: xử lý Bomber ăn Item
 		// Tăng FlamePatch size lên 1
-		if (e instanceof Bomber){
-			Game.addBombRadius(1);
-			this.remove();
+		if (!(e instanceof Bomber)) {
+			return false;
 		}
+		Game.addBombRadius(1);
+		this.remove();
 		return false;
 	}
 

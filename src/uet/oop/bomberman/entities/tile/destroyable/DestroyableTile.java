@@ -23,12 +23,18 @@ public class DestroyableTile extends Tile {
 	
 	@Override
 	public void update() {
-		if(destroyed) {
-			if(animate < MAX_ANIMATE) animate++; else animate = 0;
-			if(timeToBanishment > 0) 
-				timeToBanishment--;
-			else
-				remove();
+		if (!destroyed) {
+			return;
+		}
+		if (animate >= MAX_ANIMATE) {
+			animate = 0;
+		} else {
+			animate++;
+		}
+		if (timeToBanishment <= 0) {
+			remove();
+		} else {
+			timeToBanishment--;
 		}
 	}
 
@@ -41,15 +47,12 @@ public class DestroyableTile extends Tile {
 		// TODO: xử lý khi va chạm với Flame va Doria
 		// Gặp lửa thì huỷ
 		boolean check = true;
-		if (e instanceof Flame){
-			this.destroy();
-			return true;
+		if (!(e instanceof Flame)) {
+			return !(e instanceof Doria);
 		}
-
-		if (e instanceof Doria) {
-			return false;
-		}
+		this.destroy();
 		return true;
+
 	}
 	
 	public void addHiddenSprite(Sprite sprite) {
@@ -58,15 +61,16 @@ public class DestroyableTile extends Tile {
 	
 	protected Sprite movingSprite(Sprite normal, Sprite x1, Sprite x2) {
 		int calc = animate % 30;
-		
-		if(calc < 10) {
+
+		if (calc >= 10) {
+			if (calc < 20) {
+				return x1;
+			}
+
+			return x2;
+		} else {
 			return normal;
 		}
-			
-		if(calc < 20) {
-			return x1;
-		}
-			
-		return x2;
+
 	}
 }

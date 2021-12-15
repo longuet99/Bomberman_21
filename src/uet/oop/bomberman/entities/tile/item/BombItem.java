@@ -14,10 +14,11 @@ public class BombItem extends Item {
 	@Override
 	public boolean collide(Entity e) {
 		// TODO: xử lý Bomber ăn Item
-		if (e instanceof Bomber){
-			Game.addBombRate(1);
-			this.remove();
+		if (!(e instanceof Bomber)) {
+			return false;
 		}
+		Game.addBombRate(1);
+		this.remove();
 		return false;
 	}
 	

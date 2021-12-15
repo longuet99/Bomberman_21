@@ -18,7 +18,7 @@ public class Portal extends Tile {
 	public boolean collide(Entity e) {
 		// TODO: xử lý khi Bomber đi vào
 		// Lên level (phải diệt sạch quái trước)
-		if (e instanceof Bomber && Game.getNumberOfEnemy() == 0 ){
+		if (e instanceof Bomber && Game.getNumberOfEnemy() == 0 ) {
 			board.nextLevel();
 		}
 		return false;

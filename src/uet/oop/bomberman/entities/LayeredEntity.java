@@ -58,8 +58,7 @@ public class LayeredEntity extends Entity {
 
 	@Override
 	public boolean collide(Entity e) {
-		boolean collide = this.getTopEntity().collide(e);
-		return collide;
+		return this.getTopEntity().collide(e);
 	}
 
 }
