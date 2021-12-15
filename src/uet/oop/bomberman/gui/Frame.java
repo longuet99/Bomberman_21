@@ -6,28 +6,28 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Swing Frame chứa toàn bộ các component
+ * Swing Frame chứa các component để render màn chơi
  */
 public class Frame extends JFrame {
 
-    public GamePanel gamePanel;
-    private JPanel containerPanel;
-    private InfoPanel infoPanel;
+    public GamePanel panelGame;
+    private JPanel panelContainer;
+    private InfoPanel panelThongTin;
 
     private Game game;
 
     public Frame() {
 
-        containerPanel = new JPanel(new BorderLayout());
-        gamePanel = new GamePanel(this);
-        infoPanel = new InfoPanel(gamePanel.getGame());
+        panelContainer = new JPanel(new BorderLayout());
+        panelGame = new GamePanel(this);
+        panelThongTin = new InfoPanel(panelGame.getGame());
 
-        containerPanel.add(infoPanel, BorderLayout.PAGE_START);
-        containerPanel.add(gamePanel, BorderLayout.PAGE_END);
+        panelContainer.add(panelThongTin, BorderLayout.PAGE_START);
+        panelContainer.add(panelGame, BorderLayout.PAGE_END);
 
-        game = gamePanel.getGame();
+        game = panelGame.getGame();
 
-        add(containerPanel);
+        add(panelContainer);
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,11 +39,11 @@ public class Frame extends JFrame {
     }
 
     public void setTime(int time) {
-        infoPanel.setTime(time);
+        panelThongTin.setTime(time);
     }
 
     public void setPoints(int points) {
-        infoPanel.setPoints(points);
+        panelThongTin.setPoints(points);
     }
 
 }

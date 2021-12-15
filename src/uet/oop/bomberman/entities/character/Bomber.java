@@ -61,12 +61,12 @@ public class Bomber extends Character {
             sprite = Sprite.player_dead1;
         }
 
-        screen.renderEntity((int) x, (int) y - sprite.SIZE, this);
+        screen.renderEntity((int) x, (int) y - sprite.kichCo, this);
     }
 
     public void calculateXOffset() {
-        int xScroll = Screen.calculateXOffset(board, this);
-        Screen.setOffset(xScroll, 0);
+        int xScroll = Screen.tinhXOffset(board, this);
+        Screen.datOffset(xScroll, 0);
     }
 
     /**
@@ -79,7 +79,7 @@ public class Bomber extends Character {
         // TODO: nếu 3 điều kiện trên thỏa mãn thì thực hiện đặt bom bằng placeBomb()
         // TODO: sau khi đặt, nhớ giảm số lượng Bomb Rate và reset timeBetweenTwoBombs về 0
         int bombRate = Game.getBombRate();
-        if (!input.space || bombRate <= 0 || this.timeBetweenTwoBombs >= 0) {
+        if (!input.datBom || bombRate <= 0 || this.timeBetweenTwoBombs >= 0) {
             return;
         } else {
             Game.addBombRate(-1);
@@ -116,7 +116,7 @@ public class Bomber extends Character {
         if (!alive) {
             return;
         }
-        SoundEffect.GHOST.stop();
+        SoundEffect.BGM.stop();
         alive = false;
     }
 
@@ -134,32 +134,32 @@ public class Bomber extends Character {
         double x = this.x;
         double y = this.y;
 
-        if (!input.up) {
+        if (!input.len) {
         } else {
             y -= Game.getBomberSpeed();
             this.direction = 0;
 
         }
 
-        if (!input.right) {
+        if (!input.phai) {
         } else {
             x += Game.getBomberSpeed();
             this.direction = 1;
         }
 
-        if (!input.down) {
+        if (!input.xuong) {
         } else {
             y += Game.getBomberSpeed();
             this.direction = 2;
         }
 
-        if (!input.left) {
+        if (!input.trai) {
         } else {
             x -= Game.getBomberSpeed();
             this.direction = 3;
         }
 
-        this.moving = input.down ||input.left || input.up || input.right ;
+        this.moving = input.xuong ||input.trai || input.len || input.phai;
 
         this.move(x, y);
 
@@ -288,26 +288,26 @@ public class Bomber extends Character {
             case 0:
                 sprite = Sprite.player_up;
                 if (moving) {
-                    sprite = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, animate, 20);
+                    sprite = Sprite.animatedSprites(Sprite.player_up_1, Sprite.player_up_2, animate, 20);
                 }
                 break;
             case 2:
                 sprite = Sprite.player_down;
                 if (moving) {
-                    sprite = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, animate, 20);
+                    sprite = Sprite.animatedSprites(Sprite.player_down_1, Sprite.player_down_2, animate, 20);
                 }
                 break;
             case 3:
                 sprite = Sprite.player_left;
                 if (moving) {
-                    sprite = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, animate, 20);
+                    sprite = Sprite.animatedSprites(Sprite.player_left_1, Sprite.player_left_2, animate, 20);
                 }
                 break;
             case 1:
             default:
                 sprite = Sprite.player_right;
                 if (moving) {
-                    sprite = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, animate, 20);
+                    sprite = Sprite.animatedSprites(Sprite.player_right_1, Sprite.player_right_2, animate, 20);
                 }
                 break;
         }

@@ -5,7 +5,6 @@ import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.character.enemy.ai.EasyAI;
-import uet.oop.bomberman.entities.character.enemy.ai.HardAI;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Doria extends Enemy {
@@ -22,11 +21,11 @@ public class Doria extends Enemy {
         switch(direction) {
             case 0:
             case 1:
-                sprite = Sprite.movingSprite(Sprite.kondoria_right1, Sprite.kondoria_right2, Sprite.kondoria_right3, animate, 60);
+                sprite = Sprite.animatedSprites(Sprite.kondoria_right1, Sprite.kondoria_right2, Sprite.kondoria_right3, animate, 60);
                 break;
             case 2:
             case 3:
-                sprite = Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left3, animate, 60);
+                sprite = Sprite.animatedSprites(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left3, animate, 60);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + direction);

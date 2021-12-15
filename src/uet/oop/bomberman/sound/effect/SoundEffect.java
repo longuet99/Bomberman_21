@@ -3,42 +3,39 @@ package uet.oop.bomberman.sound.effect;
 
 import java.io.*;
 import java.net.URL;
+import java.util.Objects;
 import javax.sound.sampled.*;
 
 public enum SoundEffect {
-    EXPLODE("bambam.wav"),  // explosion
-    GHOST("trapbeatcucmanh.wav"),
-    DEAD("ooohshit.wav"),
-    KILL("trapperkiller.wav");
+    EXPLODE("boom.wav"),  // sfx bom no
+    BGM("bgm.wav"),       // sfx nhac nen
+    DEAD("dead.wav"),     // sfx chet
+    KILL("kill.wav");     // sfx tieu diet dich
 
-    // Each sounds effects has its own clip, loaded with its own sounds file.
+    // Mỗi hiệu ứng âm thanh có clip riêng, được tải bằng tệp âm thanh riêng.
     private Clip clip;
 
-    // Constructor to construct each element of the enum with its own sounds file.
+    // Hàm tạo để xây dựng từng phần tử của enum với tệp âm thanh của riêng nó.
     SoundEffect(String soundFileName) {
         try {
-            // Use URL (instead of File) to read from disk and JAR.
+            // Sử dụng URL (thay vì Tệp) để đọc từ đĩa và JAR.
             URL url = this.getClass().getResource("/sounds/effects/" + soundFileName);
 
-            // Set up an audio input stream piped from the sounds file.
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+            // Thiết lập luồng đầu vào âm thanh được truyền từ tệp âm thanh.
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(url));
             AudioFormat audioFormat = audioInputStream.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, audioFormat);
-            // Get a lip resource.
+            // Nhận một nguồn tài nguyên môi.
             clip = (Clip) AudioSystem.getLine(info);
-            // Open audio clip and load samples from the audio input stream.
+            // Mở đoạn âm thanh và tải mẫu từ luồng đầu vào âm thanh.
             clip.open(audioInputStream);
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
         clip.setLoopPoints(0, -1);
     }
 
-    // Play or Re-play the sounds effects from the beginning, by rewinding.
+    // Phát hoặc phát lại các hiệu ứng âm thanh từ đầu bằng cách tua lại.
     public void play() {
         System.out.println("SoundEffect " + clip.isActive());
         if (clip.isActive()) {
@@ -72,8 +69,8 @@ public enum SoundEffect {
         clip.stop();
     }
 
-    // Optional static method to pre-load all the sounds files.
+    // Phương pháp tĩnh tùy chọn để tải trước tất cả các tệp âm thanh.
     public static void init() {
-        values(); // calls the constructor for all the elements
+        values(); // gọi hàm tạo cho tất cả các phần tử
     }
 }

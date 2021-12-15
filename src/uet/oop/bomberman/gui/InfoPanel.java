@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Swing Panel hiển thị thông tin thời gian, điểm mà người chơi đạt được
+ * Swing Panel show ra thông tin time, points mà bomber dành được
  */
 public class InfoPanel extends JPanel {
 	
@@ -17,17 +17,17 @@ public class InfoPanel extends JPanel {
 		setLayout(new GridLayout());
 		
 		timeLabel = new JLabel("Time: " + game.getBoard().getTime());
-		timeLabel.setForeground(Color.white);
+		timeLabel.setForeground(Color.orange);
 		timeLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		pointsLabel = new JLabel("Points: " + game.getBoard().getPoints());
-		pointsLabel.setForeground(Color.white);
+		pointsLabel.setForeground(Color.orange);
 		pointsLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		add(timeLabel);
 		add(pointsLabel);
 		
-		setBackground(Color.black);
+		setBackground(Color.cyan);
 		setPreferredSize(new Dimension(0, 40));
 	}
 	

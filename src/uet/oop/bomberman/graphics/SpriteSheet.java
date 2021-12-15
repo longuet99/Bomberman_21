@@ -4,10 +4,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 /**
- * Tất cả sprite (hình ảnh game) được lưu trữ vào một ảnh duy nhất
- * Class này giúp lấy ra các sprite riêng từ 1 ảnh chung duy nhất đó
+ * Tất cả sprite (của các entities) được lưu trữ vào một ảnh duy nhất
+ * Class này giúp tách ra các sprite riêng từ 1 ảnh chung dựa theo pixel
  */
 public class SpriteSheet {
 
@@ -27,7 +28,7 @@ public class SpriteSheet {
 	private void load() {
 		try {
 			URL a = SpriteSheet.class.getResource(_path);
-			BufferedImage image = ImageIO.read(a);
+			BufferedImage image = ImageIO.read(Objects.requireNonNull(a));
 			int w = image.getWidth();
 			int h = image.getHeight();
 			image.getRGB(0, 0, w, h, _pixels, 0, w);

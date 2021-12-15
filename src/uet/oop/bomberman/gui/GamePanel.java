@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Swing Panel chứa cảnh game
+ * Swing Panel với cảnh trong game
  */
 public class GamePanel extends JPanel {
 
@@ -14,7 +14,7 @@ public class GamePanel extends JPanel {
 	
 	public GamePanel(Frame frame) {
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE));
+		setPreferredSize(new Dimension(Game.chieuDai * Game.tiLe, Game.chieuRong * Game.tiLe));
 
 		game = new Game(frame);
 

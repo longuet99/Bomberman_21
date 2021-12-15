@@ -17,14 +17,14 @@ import java.awt.image.DataBufferInt;
 public class Game extends Canvas {
 
     public static final int TILES_SIZE = 16,
-            WIDTH = TILES_SIZE * (31 / 2),
-            HEIGHT = 13 * TILES_SIZE,
+            chieuDai = TILES_SIZE * (31 / 2),
+            chieuRong = 13 * TILES_SIZE,
             MAXIMUM_JUMP_DISTANCE = 4,
             CHARACTER_WIDTH = 11,
             CHARACTER_HEIGHT = TILES_SIZE;
 
 
-    public static int SCALE = 3;
+    public static int tiLe = 3;
 
 
     public static final String TITLE = "BombermanGame";
@@ -62,14 +62,14 @@ public class Game extends Canvas {
     private Screen screen;
     private Frame frame;
 
-    private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+    private BufferedImage image = new BufferedImage(chieuDai, chieuRong, BufferedImage.TYPE_INT_RGB);
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
     public Game(Frame frame) {
         this.frame = frame;
         this.frame.setTitle(TITLE);
 
-        screen = new Screen(WIDTH, HEIGHT);
+        screen = new Screen(chieuDai, chieuRong);
         input = new Keyboard();
 
         board = new Board(this, input, screen);
@@ -153,7 +153,7 @@ public class Game extends Canvas {
 
                 renderScreen();
             } else {
-                SoundEffect.GHOST.loopInf();
+                SoundEffect.BGM.loopInf();
                 renderGame();
             }
 

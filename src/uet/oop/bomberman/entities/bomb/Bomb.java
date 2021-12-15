@@ -53,7 +53,7 @@ public class Bomb extends AnimatedEntity {
     @Override
     public void render(Screen screen) {
         if (!exploded) {
-            sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, 60);
+            sprite = Sprite.animatedSprites(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, 60);
         } else {
             sprite = Sprite.bomb_exploded2;
             renderFlames(screen);

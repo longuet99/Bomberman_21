@@ -2,10 +2,7 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.character.enemy.ai.EasyAI;
-import uet.oop.bomberman.entities.character.enemy.ai.HardAI;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Minvo extends Enemy {
@@ -20,9 +17,9 @@ public class Minvo extends Enemy {
     @Override
     protected void chooseSprite() {
         if (direction == 0 || direction == 1) {
-            sprite = Sprite.movingSprite(Sprite.minvo_right1, Sprite.minvo_right2, Sprite.minvo_right3, animate, 60);
+            sprite = Sprite.animatedSprites(Sprite.minvo_right1, Sprite.minvo_right2, Sprite.minvo_right3, animate, 60);
         } else if (direction == 2 || direction == 3) {
-            sprite = Sprite.movingSprite(Sprite.minvo_left1, Sprite.minvo_left2, Sprite.minvo_left3, animate, 60);
+            sprite = Sprite.animatedSprites(Sprite.minvo_left1, Sprite.minvo_left2, Sprite.minvo_left3, animate, 60);
         }
     }
 }

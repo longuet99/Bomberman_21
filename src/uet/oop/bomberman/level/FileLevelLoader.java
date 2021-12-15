@@ -32,9 +32,9 @@ public class FileLevelLoader extends LevelLoader {
     }
 
     @Override
-    public void loadLevel(int level) throws LoadLevelException {
+    public void taiManChoi(int manChoi) throws LoadLevelException {
 
-        String levelFilePathName = "/levels/Level" + level + ".txt";
+        String levelFilePathName = "/levels/Level" + manChoi + ".txt";
         InputStream in = FileLevelLoader.class.getResourceAsStream(levelFilePathName);
         if (in == null) {
             System.out.println(levelFilePathName); // for checking purposes
@@ -43,35 +43,35 @@ public class FileLevelLoader extends LevelLoader {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String firstLine;
-        String[] levelInfo;
+        String[] thongTinManChoi;
         try {
             firstLine = reader.readLine();
-            levelInfo = firstLine.split(" ");
-            if (levelInfo.length == 3) {
-                this.level = Integer.parseInt(levelInfo[0]);
-                this.height = Integer.parseInt(levelInfo[1]);
-                this.width = Integer.parseInt(levelInfo[2]);
+            thongTinManChoi = firstLine.split(" ");
+            if (thongTinManChoi.length == 3) {
+                this.manChoi = Integer.parseInt(thongTinManChoi[0]);
+                this.rong = Integer.parseInt(thongTinManChoi[1]);
+                this.dai = Integer.parseInt(thongTinManChoi[2]);
             } else {
-                throw new LoadLevelException("Level is corrupted");
+                throw new LoadLevelException("Level bi loi, vui long thu lai");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        _map = new char[this.height][this.width];
+        _map = new char[this.rong][this.dai];
 
         try {
-            for (int i = 0; i < this.height; i++) {
+            for (int i = 0; i < this.rong; i++) {
                 String str = reader.readLine();
                 //System.out.println(str); // test purposes
-                for (int j = 0; j < this.width; j++) {
+                for (int j = 0; j < this.dai; j++) {
                     _map[i][j] = str.charAt(j);
 
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-            throw new LoadLevelException("Level is corrupted");
+            throw new LoadLevelException("Level bi loi, vui long thu lai");
         }
 
 
@@ -85,116 +85,87 @@ public class FileLevelLoader extends LevelLoader {
     }
 
     @Override
-    public void createEntities() {
+    public void taoVatThe() {
 
 
-        for (int y = 0; y < this.height; y++) {
-            for (int x = 0; x < this.width; x++) {
-                int position = y * width + x;
-                switch (_map[y][x]) {
-
-                    case ' ': { // Grass tile
-                        board.addEntity(position, new Grass(x, y, Sprite.grass));
-                        break;
-                    }
-
-                    case '#': { // Wall tile
-                        board.addEntity(position, new Wall(x, y, Sprite.wall));
-                        break;
-                    }
-
-                    case '*': { // Brick tile
-                        board.addEntity(position,
-                                new LayeredEntity(x, y,
-                                        new Grass(x, y, Sprite.grass),
-                                        new Brick(x, y, Sprite.brick))
-                        );
-                        break;
-                    }
-
-                    case '1': { // Balloon boy
-                        board.addCharacter(new Balloon(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
-                        board.addEntity(position, new Grass(x, y, Sprite.grass));
-                        break;
-                    }
-
-                    case '2': { // Oneal
-                        board.addCharacter(new Oneal(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
-                        board.addEntity(position, new Grass(x, y, Sprite.grass));
-                        break;
-                    }
-
-                    case '3': { // Dahl
-                        board.addCharacter(new Dahl(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
-                        board.addEntity(position, new Grass(x, y, Sprite.grass));
-                        break;
-                    }
-
-                    case '4': { // Minvo
-                        board.addCharacter(new Minvo(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
-                        board.addEntity(position, new Grass(x, y, Sprite.grass));
-                        break;
-                    }
-
-                    case '5': { // Doria
-                        board.addCharacter(new Doria(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
-                        board.addEntity(position, new Grass(x, y, Sprite.grass));
-                        break;
-                    }
-
-                    case 'p': { // Player
-                        board.addCharacter(new Bomber(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
-                        Screen.setOffset(0, 0);
-                        board.addEntity(position, new Grass(x, y, Sprite.grass));
-                        break;
-                    }
-
-                    case 'b': { // More boom, more fun
-                        board.addEntity(position,
-                                new LayeredEntity(
-                                        x, y,
-                                        new Grass(x, y, Sprite.grass),
-                                        new BombItem(x, y, Sprite.powerup_bombs),
-                                        new Brick(x, y, Sprite.brick)
-                                ));
-                        break;
-                    }
-
-                    case 'f': { // Flames item
-                        board.addEntity(position,
-                                new LayeredEntity(
-                                        x, y,
-                                        new Grass(x, y, Sprite.grass),
-                                        new FlameItem(x, y, Sprite.powerup_flames),
-                                        new Brick(x, y, Sprite.brick)
-                                ));
-                        break;
-                    }
-
-                    case 's': { // Speed item
-                        board.addEntity(position,
-                                new LayeredEntity(
-                                        x, y,
-                                        new Grass(x, y, Sprite.grass),
-                                        new SpeedItem(x, y, Sprite.powerup_speed),
-                                        new Brick(x, y, Sprite.brick)
-                                ));
-                        break;
-                    }
-
-                    case 'x': { // Portal tile
-                        board.addEntity(position, new LayeredEntity(
-                                x, y,
-                                new Portal(x, y, Sprite.portal, board),
-                                new Brick(x, y, Sprite.brick)
-                        ));
-                        break;
-                    }
-
-                    default: { // Load grass default
-                        board.addEntity(position, new Brick(x, y, Sprite.brick));
-                        break;
-                    }
+        for (int y = 0; y < this.rong; y++) {
+            for (int x = 0; x < this.dai; x++) {
+                int position = y * dai + x;
+                if (_map[y][x] == '*') {
+                    // Brick tile
+                    board.themVatThe(position,
+                            new LayeredEntity(x, y,
+                                    new Grass(x, y, Sprite.grass),
+                                    new Brick(x, y, Sprite.brick))
+                    );
+                } else if (_map[y][x] == '#') {
+                    // Wall tile
+                    board.themVatThe(position, new Wall(x, y, Sprite.wall));
+                } else if (_map[y][x] == ' ') {
+                    // Grass tile
+                    board.themVatThe(position, new Grass(x, y, Sprite.grass));
+                } else if (_map[y][x] == '1') {
+                    // Balloon boy
+                    board.addCharacter(new Balloon(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
+                    board.themVatThe(position, new Grass(x, y, Sprite.grass));
+                } else if (_map[y][x] == '2') {
+                    // Oneal
+                    board.addCharacter(new Oneal(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
+                    board.themVatThe(position, new Grass(x, y, Sprite.grass));
+                } else if (_map[y][x] == '3') {
+                    // Dahl
+                    board.addCharacter(new Dahl(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
+                    board.themVatThe(position, new Grass(x, y, Sprite.grass));
+                } else if (_map[y][x] == '4') {
+                    // Minvo
+                    board.addCharacter(new Minvo(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
+                    board.themVatThe(position, new Grass(x, y, Sprite.grass));
+                } else if (_map[y][x] == '5') {
+                    // Doria
+                    board.addCharacter(new Doria(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
+                    board.themVatThe(position, new Grass(x, y, Sprite.grass));
+                } else if (_map[y][x] == 'b') {
+                    // More boom, more fun
+                    board.themVatThe(position,
+                            new LayeredEntity(
+                                    x, y,
+                                    new Grass(x, y, Sprite.grass),
+                                    new BombItem(x, y, Sprite.powerup_bombs),
+                                    new Brick(x, y, Sprite.brick)
+                            ));
+                } else if (_map[y][x] == 'f') {
+                    // Flames patches
+                    board.themVatThe(position,
+                            new LayeredEntity(
+                                    x, y,
+                                    new Grass(x, y, Sprite.grass),
+                                    new FlameItem(x, y, Sprite.powerup_flames),
+                                    new Brick(x, y, Sprite.brick)
+                            ));
+                } else if (_map[y][x] == 'p') {
+                    // Bomber
+                    board.addCharacter(new Bomber(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, board));
+                    Screen.datOffset(0, 0);
+                    board.themVatThe(position, new Grass(x, y, Sprite.grass));
+                } else if (_map[y][x] == 's') {
+                    // Speed item
+                    board.themVatThe(position,
+                            new LayeredEntity(
+                                    x, y,
+                                    new Grass(x, y, Sprite.grass),
+                                    new SpeedItem(x, y, Sprite.powerup_speed),
+                                    new Brick(x, y, Sprite.brick)
+                            ));
+                } else if (_map[y][x] == 'x') {
+                    // Portal tile
+                    board.themVatThe(position, new LayeredEntity(
+                            x, y,
+                            new Portal(x, y, Sprite.portal, board),
+                            new Brick(x, y, Sprite.brick)
+                    ));
+                } else {
+                    // Load grass default
+                    board.themVatThe(position, new Brick(x, y, Sprite.brick));
                 }
 
             }

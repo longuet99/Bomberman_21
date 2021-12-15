@@ -8,29 +8,29 @@ import uet.oop.bomberman.exceptions.LoadLevelException;
  */
 public abstract class LevelLoader {
 
-	protected int width = 20, height = 20; // default values just for testing
-	protected int level;
+	protected int dai = 20, rong = 20; // default values just for testing
+	protected int manChoi;
 	protected Board board;
 
-	public LevelLoader(Board board, int level) throws LoadLevelException {
+	public LevelLoader(Board board, int manChoi) throws LoadLevelException {
 		this.board = board;
-		loadLevel(level);
+		taiManChoi(manChoi);
 	}
 
-	public abstract void loadLevel(int level) throws LoadLevelException;
+	public abstract void taiManChoi(int manChoi) throws LoadLevelException;
 
-	public abstract void createEntities();
+	public abstract void taoVatThe();
 
-	public int getWidth() {
-		return width;
+	public int getDai() {
+		return dai;
 	}
 
-	public int getHeight() {
-		return height;
+	public int getRong() {
+		return rong;
 	}
 
-	public int getLevel() {
-		return level;
+	public int getManChoi() {
+		return manChoi;
 	}
 
 }

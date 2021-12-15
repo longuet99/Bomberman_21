@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Quản lý thao tác điều khiển, load level, render các màn hình của game
+ * Quản lý thao tác điều khiển, load manChoi, render các màn hình của game
  */
 public class Board implements IRender {
 	protected LevelLoader levelLoader;
@@ -43,7 +43,7 @@ public class Board implements IRender {
 		this.input = input;
 		this.screen = screen;
 		
-		loadLevel(1); //start in level 1
+		loadLevel(1); //start in manChoi 1
 	}
 	
 	@Override
@@ -67,14 +67,14 @@ public class Board implements IRender {
 		if( game.isPaused() ) return;
 		
 		//only render the visible part of screen
-		int x0 = Screen.xOffset >> 4; //tile precision, -> left X
-		int x1 = (Screen.xOffset + screen.getWidth() + Game.TILES_SIZE) / Game.TILES_SIZE; // -> right X
+		int x0 = Screen.xOffset >> 4; //tile precision, -> trai X
+		int x1 = (Screen.xOffset + screen.getDai() + Game.TILES_SIZE) / Game.TILES_SIZE; // -> phai X
 		int y0 = Screen.yOffset >> 4;
-		int y1 = (Screen.yOffset + screen.getHeight()) / Game.TILES_SIZE; //render one tile plus to fix black margins
+		int y1 = (Screen.yOffset + screen.getRong()) / Game.TILES_SIZE; //render one tile plus to fix black margins
 		
 		for (int y = y0; y < y1; y++) {
 			for (int x = x0; x < x1; x++) {
-				entities[x + y * levelLoader.getWidth()].render(screen);
+				entities[x + y * levelLoader.getDai()].render(screen);
 			}
 		}
 		
@@ -84,8 +84,8 @@ public class Board implements IRender {
 	}
 	
 	public void nextLevel() {
-		SoundEffect.GHOST.stop();
-		loadLevel(levelLoader.getLevel() + 1);
+		SoundEffect.BGM.stop();
+		loadLevel(levelLoader.getManChoi() + 1);
 	}
 	
 	public void loadLevel(int level) {
@@ -99,9 +99,9 @@ public class Board implements IRender {
 		
 		try {
 			levelLoader = new FileLevelLoader(this, level);
-			entities = new Entity[levelLoader.getHeight() * levelLoader.getWidth()];
+			entities = new Entity[levelLoader.getRong() * levelLoader.getDai()];
 			
-			levelLoader.createEntities();
+			levelLoader.taoVatThe();
 		} catch (LoadLevelException e) {
 			endGame();
 		}
@@ -134,7 +134,7 @@ public class Board implements IRender {
 				screen.drawEndGame(g, points);
 				break;
 			case 2:
-				screen.drawChangeLevel(g, levelLoader.getLevel());
+				screen.drawChangeLevel(g, levelLoader.getManChoi());
 				break;
 			case 3:
 				screen.drawPaused(g);
@@ -225,10 +225,10 @@ public class Board implements IRender {
 	}
 	
 	public Entity getEntityAt(double x, double y) {
-		return entities[(int)x + (int)y * levelLoader.getWidth()];
+		return entities[(int)x + (int)y * levelLoader.getDai()];
 	}
 	
-	public void addEntity(int pos, Entity e) {
+	public void themVatThe(int pos, Entity e) {
 		entities[pos] = e;
 	}
 	
@@ -265,7 +265,7 @@ public class Board implements IRender {
 			
 			g.setFont(new Font("Arial", Font.PLAIN, m.getSize()));
 			g.setColor(m.getColor());
-			g.drawString(m.getMessage(), (int)m.getX() - Screen.xOffset  * Game.SCALE, (int)m.getY());
+			g.drawString(m.getMessage(), (int)m.getX() - Screen.xOffset  * Game.tiLe, (int)m.getY());
 		}
 	}
 	
@@ -347,11 +347,11 @@ public class Board implements IRender {
 	}
 	
 	public int getWidth() {
-		return levelLoader.getWidth();
+		return levelLoader.getDai();
 	}
 
 	public int getHeight() {
-		return levelLoader.getHeight();
+		return levelLoader.getRong();
 	}
 	
 }

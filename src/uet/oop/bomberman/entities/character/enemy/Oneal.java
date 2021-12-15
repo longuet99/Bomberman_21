@@ -23,12 +23,12 @@ public class Oneal extends Enemy {
 	protected void chooseSprite() {
 		if (direction == 0 || direction == 1) {
 			if (moving)
-				sprite = Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, 60);
+				sprite = Sprite.animatedSprites(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, 60);
 			else
 				sprite = Sprite.oneal_left1;
 		} else if (direction == 2 || direction == 3) {
 			if (moving)
-				sprite = Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 60);
+				sprite = Sprite.animatedSprites(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 60);
 			else
 				sprite = Sprite.oneal_left1;
 		}
