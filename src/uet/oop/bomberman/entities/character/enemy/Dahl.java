@@ -16,7 +16,6 @@ public class Dahl extends Enemy {
         super(x, y, board, Sprite.doll_dead, Game.getBomberSpeed() / 3, 2000);
 
         sprite = Sprite.doll_left1;
-
         ai = new HardAI(board.getBomber(), this);
         direction = ai.calculateDirection();
     }
@@ -31,6 +30,8 @@ public class Dahl extends Enemy {
             case 3:
                 sprite = Sprite.movingSprite(Sprite.doll_left1, Sprite.doll_left2, Sprite.doll_left3, animate, 60);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + direction);
         }
     }
 

@@ -91,26 +91,14 @@ public abstract class Enemy extends Character {
         }
         steps--;
 
-        switch (this.direction) {
-            case 1: {
-                x += speed;
-                break;
-            }
-            case 0: {
-                y -= speed;
-                break;
-            }
-            case 3: {
-                x -= speed;
-                break;
-            }
-            case 2: {
-                y += speed;
-                break;
-            }
-            default: {
-                break;
-            }
+        if (this.direction == 1) {
+            x += speed;
+        } else if (this.direction == 0) {
+            y -= speed;
+        } else if (this.direction == 3) {
+            x -= speed;
+        } else if (this.direction == 2) {
+            y += speed;
         }
 
 
@@ -118,57 +106,40 @@ public abstract class Enemy extends Character {
     }
 
     @Override
-    public void move(double xa, double ya) {
-        if (alive && this.canMove(xa, ya)) {
-            y = ya;
-            x = xa;
+    public void move(double xA, double yA) {
+        if (alive && this.canMove(xA, yA)) {
+            y = yA;
+            x = xA;
         }
     }
 
     @Override
-    public boolean canMove(double x, double y) {
+    public boolean canMove(double xA, double yA) {
         // TODO: kiểm tra có đối tượng tại vị trí chuẩn bị di chuyển đến và có thể di chuyển tới đó hay không
-        double dependedDirectionX1 = x;
-        double dependedDirectionY1 = y;
+        double dependedDirectionX1 = xA;
+        double dependedDirectionY1 = yA;
 
-        double dependedDirectionX2 = x;
-        double dependedDirectionY2 = y;
+        double dependedDirectionX2 = xA;
+        double dependedDirectionY2 = yA;
 
-        switch (this.direction) {
-
-            case 0: {
-                dependedDirectionX1 += 1;
-                dependedDirectionY1 -= Game.TILES_SIZE;
-                dependedDirectionX2 += Game.TILES_SIZE - 1;
-                dependedDirectionY2 -= Game.TILES_SIZE;
-                break;
-            }
-
-            case 1: {
-                dependedDirectionX1 += Game.TILES_SIZE;
-                dependedDirectionY1 -= Game.TILES_SIZE - 1;
-                dependedDirectionX2 += Game.TILES_SIZE;
-                dependedDirectionY2 -= 1;
-                break;
-            }
-
-            case 2: {
-                dependedDirectionX1 += 1;
-                dependedDirectionY1 -= 1;
-                dependedDirectionX2 += Game.TILES_SIZE - 1;
-                dependedDirectionY2 -= 1;
-                break;
-            }
-
-            case 3: {
-                dependedDirectionY1 -= 1;
-                dependedDirectionY2 -= Game.TILES_SIZE - 1;
-                break;
-            }
-
-            default: {
-                break;
-            }
+        if (this.direction == 0) {
+            dependedDirectionX1 += 1;
+            dependedDirectionY1 -= Game.TILES_SIZE;
+            dependedDirectionX2 += Game.TILES_SIZE - 1;
+            dependedDirectionY2 -= Game.TILES_SIZE;
+        } else if (this.direction == 1) {
+            dependedDirectionX1 += Game.TILES_SIZE;
+            dependedDirectionY1 -= Game.TILES_SIZE - 1;
+            dependedDirectionX2 += Game.TILES_SIZE;
+            dependedDirectionY2 -= 1;
+        } else if (this.direction == 2) {
+            dependedDirectionX1 += 1;
+            dependedDirectionY1 -= 1;
+            dependedDirectionX2 += Game.TILES_SIZE - 1;
+            dependedDirectionY2 -= 1;
+        } else if (this.direction == 3) {
+            dependedDirectionY1 -= 1;
+            dependedDirectionY2 -= Game.TILES_SIZE - 1;
         }
 
         Entity entity1 = board.getEntity(Coordinates.pixelToTile(dependedDirectionX1), Coordinates.pixelToTile(dependedDirectionY1), this);

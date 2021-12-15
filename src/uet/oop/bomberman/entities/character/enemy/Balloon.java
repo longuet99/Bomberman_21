@@ -30,6 +30,8 @@ public class Balloon extends Enemy {
 			case 3:
 					sprite = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 60);
 				break;
+			default:
+				throw new IllegalStateException("Unexpected value: " + direction);
 		}
 	}
 

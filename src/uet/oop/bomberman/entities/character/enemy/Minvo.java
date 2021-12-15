@@ -19,15 +19,10 @@ public class Minvo extends Enemy {
     }
     @Override
     protected void chooseSprite() {
-        switch(direction) {
-            case 0:
-            case 1:
-                sprite = Sprite.movingSprite(Sprite.minvo_right1, Sprite.minvo_right2, Sprite.minvo_right3, animate, 60);
-                break;
-            case 2:
-            case 3:
-                sprite = Sprite.movingSprite(Sprite.minvo_left1, Sprite.minvo_left2, Sprite.minvo_left3, animate, 60);
-                break;
+        if (direction == 0 || direction == 1) {
+            sprite = Sprite.movingSprite(Sprite.minvo_right1, Sprite.minvo_right2, Sprite.minvo_right3, animate, 60);
+        } else if (direction == 2 || direction == 3) {
+            sprite = Sprite.movingSprite(Sprite.minvo_left1, Sprite.minvo_left2, Sprite.minvo_left3, animate, 60);
         }
     }
 }

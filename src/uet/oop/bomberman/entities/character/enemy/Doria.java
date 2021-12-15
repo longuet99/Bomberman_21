@@ -28,6 +28,8 @@ public class Doria extends Enemy {
             case 3:
                 sprite = Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left3, animate, 60);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + direction);
         }
     }
 

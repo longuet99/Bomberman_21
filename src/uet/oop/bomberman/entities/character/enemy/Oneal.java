@@ -21,21 +21,16 @@ public class Oneal extends Enemy {
 	
 	@Override
 	protected void chooseSprite() {
-		switch(direction) {
-			case 0:
-			case 1:
-				if(moving)
-					sprite = Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, 60);
-				else
-					sprite = Sprite.oneal_left1;
-				break;
-			case 2:
-			case 3:
-				if(moving)
-					sprite = Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 60);
-				else
-					sprite = Sprite.oneal_left1;
-				break;
+		if (direction == 0 || direction == 1) {
+			if (moving)
+				sprite = Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, 60);
+			else
+				sprite = Sprite.oneal_left1;
+		} else if (direction == 2 || direction == 3) {
+			if (moving)
+				sprite = Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 60);
+			else
+				sprite = Sprite.oneal_left1;
 		}
 	}
 

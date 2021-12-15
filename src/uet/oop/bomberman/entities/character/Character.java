@@ -11,11 +11,22 @@ import uet.oop.bomberman.graphics.Screen;
 public abstract class Character extends AnimatedEntity {
 	
 	protected Board board;
-	protected int direction = -1;
-	protected boolean alive = true;
-	protected boolean moving = false;
-	public int afterTimer = 40;
-	
+	protected int direction;
+
+	{
+		direction = -1;
+	}
+
+	protected boolean alive;
+	protected boolean moving;
+	public int afterTimer;
+
+	{
+		moving = false;
+		alive = true;
+		afterTimer = 40;
+	}
+
 	public Character(int x, int y, Board board) {
 		this.x = x;
 		this.y = y;

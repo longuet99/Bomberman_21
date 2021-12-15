@@ -81,10 +81,11 @@ public class Bomber extends Character {
         int bombRate = Game.getBombRate();
         if (!input.space || bombRate <= 0 || this.timeBetweenTwoBombs >= 0) {
             return;
+        } else {
+            Game.addBombRate(-1);
+            this.timeBetweenTwoBombs = Game.TIME_BETWEEN_PLACE_BOMB;
+            this.placeBomb(Coordinates.pixelToTile(this.x + Game.TILES_SIZE / 2), Coordinates.pixelToTile(this.y - Game.TILES_SIZE / 2));
         }
-        Game.addBombRate(-1);
-        this.timeBetweenTwoBombs = Game.TIME_BETWEEN_PLACE_BOMB;
-        this.placeBomb(Coordinates.pixelToTile(this.x + Game.TILES_SIZE / 2), Coordinates.pixelToTile(this.y - Game.TILES_SIZE / 2));
 
     }
 
